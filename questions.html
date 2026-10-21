@@ -1,0 +1,1542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Assessment Review Suite - Questions A</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <style>
+    /* Design System & Custom Properties */
+    :root {
+      --bg-main: #0a0a0e;
+      --bg-sidebar: rgba(13, 13, 20, 0.6);
+      --bg-card: rgba(255, 255, 255, 0.03);
+      --bg-card-hover: rgba(255, 255, 255, 0.06);
+      --border-color: rgba(255, 255, 255, 0.08);
+      --border-focus: rgba(209, 18, 126, 0.5);
+      
+      --accent-magenta: #d1127e;
+      --accent-magenta-hover: #b00b65;
+      --accent-blue: #0072f5;
+      --accent-green: #17c964;
+      
+      --text-primary: #f4f4f7;
+      --text-secondary: #a1a1aa;
+      --text-muted: #71717a;
+      
+      --sidebar-width: 340px;
+      --header-height: 70px;
+      --glass-blur: 16px;
+      --transition-speed: 0.25s;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg-main);
+      color: var(--text-primary);
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+    }
+
+    h1, h2, h3, h4 {
+      font-family: 'Outfit', sans-serif;
+    }
+
+    /* Scrollbar Customization */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    /* Layout Components */
+    .sidebar {
+      width: var(--sidebar-width);
+      height: 100vh;
+      background-color: var(--bg-sidebar);
+      backdrop-filter: blur(var(--glass-blur));
+      border-right: 1px solid var(--border-color);
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+      z-index: 10;
+    }
+
+    .main-content {
+      flex-grow: 1;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      background: radial-gradient(circle at 50% 50%, rgba(209, 18, 126, 0.05) 0%, transparent 60%);
+    }
+
+    /* Sidebar Components */
+    .sidebar-header {
+      padding: 20px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .brand-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #fff 30%, var(--accent-magenta) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 5px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .brand-subtitle {
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .search-filter-section {
+      padding: 15px 20px;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .search-box {
+      position: relative;
+    }
+
+    .search-input {
+      width: 100%;
+      background: rgba(0, 0, 0, 0.2);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 10px 12px 10px 35px;
+      color: var(--text-primary);
+      font-size: 0.875rem;
+      transition: all var(--transition-speed);
+    }
+
+    .search-input:focus {
+      outline: none;
+      border-color: var(--accent-magenta);
+      box-shadow: 0 0 0 2px rgba(209, 18, 126, 0.2);
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+      pointer-events: none;
+    }
+
+    .category-select {
+      width: 100%;
+      background: rgba(0, 0, 0, 0.2);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 10px;
+      color: var(--text-primary);
+      font-size: 0.875rem;
+      outline: none;
+      cursor: pointer;
+    }
+
+    .stats-bar {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      padding: 0 2px;
+    }
+
+    .stat-pill {
+      background: rgba(255, 255, 255, 0.02);
+      padding: 3px 8px;
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+    }
+
+    .stat-pill span {
+      color: var(--accent-magenta);
+      font-weight: 600;
+    }
+
+    .question-list-container {
+      flex-grow: 1;
+      overflow-y: auto;
+      padding: 10px 15px;
+    }
+
+    .question-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px;
+      border-radius: 8px;
+      margin-bottom: 8px;
+      cursor: pointer;
+      border: 1px solid transparent;
+      background-color: transparent;
+      transition: all var(--transition-speed);
+    }
+
+    .question-item:hover {
+      background-color: var(--bg-card-hover);
+      border-color: var(--border-color);
+    }
+
+    .question-item.active {
+      background: linear-gradient(90deg, rgba(209, 18, 126, 0.15) 0%, rgba(209, 18, 126, 0.02) 100%);
+      border-color: rgba(209, 18, 126, 0.3);
+    }
+
+    .item-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      max-width: 80%;
+    }
+
+    .item-title {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--text-primary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .question-item.active .item-title {
+      color: #fff;
+      font-weight: 600;
+    }
+
+    .item-subtitle {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .badge {
+      font-size: 0.65rem;
+      padding: 1px 6px;
+      border-radius: 4px;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .badge-practice {
+      background-color: rgba(0, 114, 245, 0.15);
+      color: #38bdf8;
+    }
+
+    .badge-assessment {
+      background-color: rgba(209, 18, 126, 0.15);
+      color: #f472b6;
+    }
+
+    .badge-survey {
+      background-color: rgba(23, 201, 100, 0.15);
+      color: #4ade80;
+    }
+
+    .item-indicators {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+
+    .indicator-flag {
+      color: var(--accent-magenta);
+      display: none;
+    }
+
+    .indicator-note {
+      color: var(--accent-blue);
+      display: none;
+    }
+
+    /* Main Workspace Components */
+    .header {
+      height: var(--header-height);
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 30px;
+      background-color: rgba(10, 10, 14, 0.4);
+      backdrop-filter: blur(8px);
+      z-index: 5;
+    }
+
+    .header-left {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .question-heading {
+      font-size: 1.1rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .category-tag {
+      font-size: 0.75rem;
+      background: rgba(255, 255, 255, 0.05);
+      padding: 2px 8px;
+      border-radius: 4px;
+      border: 1px solid var(--border-color);
+      color: var(--text-secondary);
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    /* Buttons */
+    .btn {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      color: var(--text-primary);
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all var(--transition-speed);
+    }
+
+    .btn:hover {
+      background: var(--bg-card-hover);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .btn-primary {
+      background: var(--accent-magenta);
+      border-color: transparent;
+    }
+
+    .btn-primary:hover {
+      background: var(--accent-magenta-hover);
+    }
+
+    .btn-flagged {
+      color: var(--accent-magenta);
+      border-color: rgba(209, 18, 126, 0.3);
+      background: rgba(209, 18, 126, 0.05);
+    }
+
+    .btn-icon-only {
+      padding: 8px;
+      border-radius: 8px;
+    }
+
+    /* Views */
+    .workspace-area {
+      flex-grow: 1;
+      padding: 25px 30px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      overflow-y: auto;
+    }
+
+    /* Split-Pane Grid */
+    .viewer-container {
+      display: flex;
+      gap: 25px;
+      flex-grow: 1;
+      min-height: 480px;
+      height: calc(100vh - 240px);
+    }
+
+    .pane-card {
+      flex: 1;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      overflow: hidden;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    }
+
+    .pane-header {
+      padding: 12px 20px;
+      border-bottom: 1px solid var(--border-color);
+      background: rgba(0, 0, 0, 0.2);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+    }
+
+    .pane-viewport {
+      flex-grow: 1;
+      overflow: hidden;
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: rgba(0, 0, 0, 0.3);
+    }
+
+    .screenshot-img {
+      width: 100%;
+      height: 100%;
+      transition: filter 0.3s ease;
+    }
+
+    /* Split Crop Styling */
+    .left-pane .screenshot-img {
+      object-fit: cover;
+      object-position: 0% center;
+    }
+
+    .right-pane .screenshot-img {
+      object-fit: cover;
+      object-position: 100% center;
+    }
+
+    /* Blur & Reveal Answer Panel */
+    .answer-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(10, 10, 14, 0.6);
+      backdrop-filter: blur(25px);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 15px;
+      z-index: 20;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+
+    .answer-overlay.revealed {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .lock-icon {
+      font-size: 2.5rem;
+      color: var(--accent-magenta);
+      margin-bottom: 10px;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); opacity: 0.8; }
+      50% { transform: scale(1.08); opacity: 1; }
+      100% { transform: scale(1); opacity: 0.8; }
+    }
+
+    .overlay-text {
+      text-align: center;
+      margin-bottom: 5px;
+    }
+
+    .overlay-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #fff;
+    }
+
+    .overlay-desc {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+    }
+
+    .hotkey-badge {
+      font-family: monospace;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 4px;
+      padding: 2px 6px;
+      font-size: 0.75rem;
+      margin-left: 5px;
+      color: var(--text-primary);
+    }
+
+    /* Full View Layout */
+    .full-view-container {
+      display: none;
+      width: 100%;
+      height: 100%;
+    }
+
+    .full-view-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    /* Bottom Panel (Notes & Navigation Dashboard) */
+    .dashboard-panel {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 20px;
+      display: flex;
+      gap: 25px;
+      align-items: stretch;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .nav-controls {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 12px;
+      min-width: 150px;
+    }
+
+    .nav-buttons-row {
+      display: flex;
+      gap: 10px;
+    }
+
+    .nav-btn {
+      flex: 1;
+      height: 42px;
+      justify-content: center;
+    }
+
+    .progress-track {
+      background: rgba(255, 255, 255, 0.05);
+      height: 6px;
+      border-radius: 3px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .progress-bar {
+      background: var(--accent-magenta);
+      height: 100%;
+      width: 0%;
+      border-radius: 3px;
+      transition: width 0.3s ease;
+    }
+
+    .notes-container {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .notes-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+    }
+
+    .notes-textarea {
+      width: 100%;
+      height: 80px;
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 12px;
+      color: var(--text-primary);
+      font-family: inherit;
+      font-size: 0.875rem;
+      resize: none;
+      outline: none;
+      transition: all var(--transition-speed);
+    }
+
+    .notes-textarea:focus {
+      border-color: var(--accent-blue);
+      box-shadow: 0 0 0 2px rgba(0, 114, 245, 0.2);
+    }
+
+    /* Hotkey helper panel */
+    .hotkey-panel {
+      border-left: 1px solid var(--border-color);
+      padding-left: 25px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 6px;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      min-width: 200px;
+    }
+
+    .hotkey-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .hotkey-key {
+      font-family: monospace;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-color);
+      padding: 1px 5px;
+      border-radius: 3px;
+      color: var(--text-secondary);
+    }
+
+    /* Empty state */
+    .empty-state {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 40px;
+      color: var(--text-secondary);
+    }
+
+    .empty-icon {
+      font-size: 3.5rem;
+      color: var(--text-muted);
+      margin-bottom: 15px;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 1024px) {
+      .viewer-container {
+        flex-direction: column;
+        height: auto;
+      }
+      .pane-card {
+        height: 400px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Sidebar Navigation -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="brand-title">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+        </svg>
+        Assessment Review
+      </div>
+      <div class="brand-subtitle">Questions A Folder Suite</div>
+    </div>
+
+    <!-- Search & Filter Controls -->
+    <div class="search-filter-section">
+      <div class="search-box">
+        <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+        <input type="text" class="search-input" id="search-bar" placeholder="Search questions/notes...">
+      </div>
+
+      <select class="category-select" id="category-filter">
+        <option value="all">All Sections (58)</option>
+        <option value="Software Testing">Software Testing (25)</option>
+        <option value="Git">Git (19)</option>
+        <option value="QA Automation">QA Automation (14)</option>
+        <option value="flagged">Flagged Items</option>
+        <option value="has_notes">Items with Notes</option>
+      </select>
+
+      <div class="stats-bar">
+        <div class="stat-pill" title="Total matches">Matches: <span id="stat-count">0</span></div>
+        <div class="stat-pill" title="Bookmarked/Flagged items">Flagged: <span id="stat-flagged">0</span></div>
+        <div class="stat-pill" title="Items containing notes">Notes: <span id="stat-notes">0</span></div>
+      </div>
+    </div>
+
+    <!-- Scrollable list of screenshots -->
+    <div class="question-list-container" id="question-list">
+      <!-- Generated items will go here -->
+    </div>
+  </aside>
+
+  <!-- Main Review Panel -->
+  <main class="main-content">
+    
+    <!-- Header -->
+    <header class="header">
+      <div class="header-left">
+        <div class="question-heading">
+          <span id="question-title-text">Loading question...</span>
+          <span class="category-tag" id="question-category-tag">General</span>
+        </div>
+      </div>
+      <div class="header-right">
+        <!-- View Toggle -->
+        <button class="btn" id="toggle-view-btn" title="Toggle between cropped Split-Screen and original full-image view">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+            <line x1="9" y1="3" x2="9" y2="21"></line>
+          </svg>
+          <span id="view-mode-label">Switch to Full View</span>
+        </button>
+
+        <!-- Bookmark/Flag -->
+        <button class="btn" id="flag-btn" title="Flag this question for further study (F)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"></path>
+            <line x1="4" y1="22" x2="4" y2="15"></line>
+          </svg>
+          <span>Flag Question</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Workspace Screen -->
+    <div class="workspace-area">
+      
+      <!-- Split-Pane Viewer -->
+      <div class="viewer-container" id="split-viewer">
+        
+        <!-- Left Pane: Question Crop -->
+        <div class="pane-card left-pane">
+          <div class="pane-header">
+            Question Details
+          </div>
+          <div class="pane-viewport">
+            <img src="" alt="Question Panel" class="screenshot-img" id="question-img">
+          </div>
+        </div>
+
+        <!-- Right Pane: Answer Crop -->
+        <div class="pane-card right-pane">
+          <div class="pane-header">
+            Answer options
+            <button class="btn btn-primary" style="padding: 2px 10px; font-size: 0.7rem; border-radius: 4px;" id="reveal-header-btn">Reveal</button>
+          </div>
+          <div class="pane-viewport">
+            <!-- Blur overlay -->
+            <div class="answer-overlay" id="answer-overlay">
+              <div class="lock-icon">
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                </svg>
+              </div>
+              <div class="overlay-text">
+                <div class="overlay-title">Answers Locked</div>
+                <div class="overlay-desc">Formulate your answer first, then unlock to check.</div>
+              </div>
+              <button class="btn btn-primary" id="reveal-btn">
+                Reveal Answer <span class="hotkey-badge">Spacebar</span>
+              </button>
+            </div>
+            <img src="" alt="Answer Panel" class="screenshot-img" id="answer-img">
+          </div>
+          
+          <!-- Correct Answer Panel -->
+          <div class="correct-answer-panel" id="correct-answer-card" style="display: none; padding: 15px; background: rgba(0, 0, 0, 0.4); border-top: 1px solid var(--border-color); flex-shrink: 0; max-height: 220px; overflow-y: auto;">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+              <span style="font-family: 'Outfit', sans-serif; font-weight: 600; font-size: 0.9rem; color: var(--accent-magenta); display: flex; align-items: center; gap: 6px;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                  <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                </svg>
+                Correct Answer: <span id="official-answer-text" style="color: #fff; font-weight: 700; margin-left: 5px;">-</span>
+              </span>
+              <button class="btn" id="edit-answer-btn" style="padding: 2px 8px; font-size: 0.65rem; border-radius: 4px; border: 1px solid rgba(255,255,255,0.1);">Edit</button>
+            </div>
+            <div id="explanation-container">
+              <p id="official-explanation-text" style="font-size: 0.8rem; color: var(--text-secondary); line-height: 1.4;"></p>
+            </div>
+            <!-- Edit Form (Hidden by default) -->
+            <div id="edit-answer-form" style="display: none; flex-direction: column; gap: 8px; margin-top: 10px;">
+              <input type="text" id="edit-answer-input" placeholder="Official Correct Answer" style="background: rgba(0,0,0,0.3); border: 1px solid var(--border-color); border-radius: 4px; padding: 6px; color: #fff; font-size: 0.8rem; outline: none; width: 100%;">
+              <textarea id="edit-explanation-input" placeholder="Explanation..." style="background: rgba(0,0,0,0.3); border: 1px solid var(--border-color); border-radius: 4px; padding: 6px; color: #fff; font-size: 0.8rem; height: 60px; resize: none; font-family: inherit; outline: none; width: 100%;"></textarea>
+              <div style="display: flex; gap: 8px; justify-content: flex-end;">
+                <button class="btn" id="cancel-edit-btn" style="padding: 2px 8px; font-size: 0.7rem;">Cancel</button>
+                <button class="btn btn-primary" id="save-edit-btn" style="padding: 2px 8px; font-size: 0.7rem;">Save</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Full-View Container (Hidden by default) -->
+      <div class="pane-card" id="full-viewer" style="display: none; height: calc(100vh - 240px); box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);">
+        <div class="pane-header">Original Full Screenshot</div>
+        <div class="pane-viewport">
+          <img src="" alt="Full Screen Preview" class="screenshot-img" id="full-img" style="object-fit: contain;">
+        </div>
+      </div>
+
+      <!-- Dashboard Panel (Navigation + Notes + Keyboard Shortcuts) -->
+      <div class="dashboard-panel">
+        
+        <!-- Navigation Panel -->
+        <div class="nav-controls">
+          <div class="nav-buttons-row">
+            <button class="btn nav-btn" id="prev-btn" title="Previous Question (A / Left Arrow)">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="15 18 9 12 15 6"></polyline>
+              </svg>
+              Prev
+            </button>
+            <button class="btn nav-btn" id="next-btn" title="Next Question (D / Right Arrow)">
+              Next
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="9 18 15 12 9 6"></polyline>
+              </svg>
+            </button>
+          </div>
+          <div style="font-size: 0.8rem; text-align: center; color: var(--text-secondary);" id="progress-text">
+            Question 0 of 0
+          </div>
+          <div class="progress-track">
+            <div class="progress-bar" id="progress-bar-el"></div>
+          </div>
+        </div>
+
+        <!-- Notes Input -->
+        <div class="notes-container">
+          <div class="notes-header">
+            <span>Notes & Concept Summaries (Auto-saved)</span>
+            <span style="font-size: 0.7rem; color: var(--text-muted);">Saved in local browser memory</span>
+          </div>
+          <textarea class="notes-textarea" id="notes-input" placeholder="Type key takeaways, formulas, or corrections here..."></textarea>
+        </div>
+
+        <!-- Keyboard Shortcut Panel -->
+        <div class="hotkey-panel">
+          <div class="hotkey-item">
+            <span>Next Question</span>
+            <span class="hotkey-key">&rarr; or D</span>
+          </div>
+          <div class="hotkey-item">
+            <span>Prev Question</span>
+            <span class="hotkey-key">&larr; or A</span>
+          </div>
+          <div class="hotkey-item">
+            <span>Reveal Answer</span>
+            <span class="hotkey-key">Space or R</span>
+          </div>
+          <div class="hotkey-item">
+            <span>Flag for study</span>
+            <span class="hotkey-key">F</span>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </main>
+
+  <script>
+    // State Management
+    let screenshots = [];
+    let currentIdx = 0;
+    let viewMode = 'split'; // 'split' or 'full'
+    let revealed = true;
+    
+    // Persistent Lists (LocalStorage)
+    let flaggedIds = JSON.parse(localStorage.getItem('flagged_ids_a') || '[]');
+    let notes = JSON.parse(localStorage.getItem('screenshot_notes_a') || '{}');
+    let customAnswers = JSON.parse(localStorage.getItem('custom_answers_a') || '{}');
+
+    const OFFICIAL_ANSWERS = {
+      // Software Testing (Practice)
+      4: {
+        answer: "The degree of impact a defect has on the development or operation of a component or system.",
+        explanation: "Bug severity measures how much impact the bug has on the system's operation (e.g., blocker, major, minor)."
+      },
+      5: {
+        answer: "Retesting: testing the fix; Regression testing: testing unchanged parts to ensure they aren't broken.",
+        explanation: "Retesting verifies that a specific defect has been fixed, whereas regression testing verifies that other, unchanged parts of the application still work correctly after changes."
+      },
+      6: {
+        answer: "True",
+        explanation: "Both statements are correct: retesting is running the test cases that previously failed to verify the success of the fix, and regression testing is executing tests on unaffected parts to verify no side-effects."
+      },
+
+      // Software Testing (Assessment)
+      7: {
+        answer: "Testing can help to reduce the risks of failures and may be necessary to meet contractual requirements or industry-specific standards.",
+        explanation: "Software testing is essential because it identifies errors, reduces the risk of operational failures, and ensures compliance with quality/contractual standards."
+      },
+      8: {
+        answer: "Testing can help to reduce the risks of failures and may be necessary to meet contractual requirements or industry-specific standards.",
+        explanation: "Software testing is essential because it identifies errors, reduces the risk of operational failures, and ensures compliance with quality/contractual standards."
+      },
+      9: {
+        answer: "Identifying potential bottlenecks in the process and eliminating them.",
+        explanation: "The primary objective of Kanban is to visualize workflow, limit work-in-progress (WIP), and continuously identify and resolve bottlenecks to optimize lead time."
+      },
+      10: {
+        answer: "Validation",
+        explanation: "Validation is the process of evaluating software to determine whether it meets the specified requirements and customer expectations ('Are we building the right product?')."
+      },
+      11: {
+        answer: "False",
+        explanation: "In software engineering terminology, a person makes a mistake (error), which introduces a defect (bug) into the code. When this defect is executed, it can cause a failure. Therefore, the statement is reversed."
+      },
+      12: {
+        answer: "An issue that is used to gain extra knowledge, research, or design.",
+        explanation: "An Agile spike is a time-boxed story dedicated to research, prototyping, or exploration, used to estimate future work or resolve design uncertainties."
+      },
+      13: {
+        answer: "You are testing the ticket next to the developer in his environment.",
+        explanation: "Testing in the developer's local environment next to them is often done when the setup is highly complex, allowing real-time debugging and collaboration."
+      },
+      14: {
+        answer: "True",
+        explanation: "Inspections are formal peer reviews with defined roles and metrics, while walkthroughs are informal sessions where the author guides participants through the product."
+      },
+      15: {
+        answer: "Developer",
+        explanation: "In standard software projects, developers are responsible for writing, maintaining, and committing their code to configuration management repositories (like Git)."
+      },
+      16: {
+        answer: "False",
+        explanation: "A developer testing their own code lacks independence, which can lead to cognitive bias (overlooking their own errors). Having independent testers is crucial."
+      },
+      17: {
+        answer: "False",
+        explanation: "Disappearing table content on a mouse click is a frontend (UI/JavaScript/CSS) issue, not a backend developer issue. It should be assigned to the frontend developer."
+      },
+      18: {
+        answer: "Comparing actual results with expected results.",
+        explanation: "During the test execution phase, tests are run, outcomes are observed, and actual results are compared with expected results to log deviations."
+      },
+      19: {
+        answer: "Test implementation",
+        explanation: "According to ISTQB, testware (such as test suites, automated scripts, and test data) is created, completed, and organized during the Test Implementation phase."
+      },
+      20: {
+        answer: "False",
+        explanation: "In Agile methodology, regression testing is executed continuously (in every sprint or CI/CD run), not just at the end of the project."
+      },
+      21: {
+        answer: "Test planning, Test analysis, Test completion",
+        explanation: "The ISTQB standard test process defines main activities including: Test planning, Test monitoring and control, Test analysis, Test design, Test implementation, Test execution, and Test completion."
+      },
+      22: {
+        answer: "Test planning: test plan; Test monitoring: test progress report, test summary report; Test implementation: test execution schedule; Test completion: test summary report",
+        explanation: "Pairs each group with its corresponding work products correctly (e.g., test execution schedule belongs to implementation, while the final summary report belongs to completion)."
+      },
+      23: {
+        answer: "Test planning: test plan; Test monitoring: test progress report, test summary report; Test implementation: test execution schedule; Test completion: test summary report",
+        explanation: "Pairs each group with its corresponding work products correctly (e.g., test execution schedule belongs to implementation, while the final summary report belongs to completion)."
+      },
+      24: {
+        answer: "Exploratory testing",
+        explanation: "Exploratory testing is an informal test design technique where the tester dynamically designs and executes tests on the fly without writing test cases in advance."
+      },
+      25: {
+        answer: "Gherkin",
+        explanation: "Gherkin is a human-readable, domain-specific language using Given-When-Then syntax, commonly used by business analysts to define acceptance criteria in Behavior-Driven Development (BDD)."
+      },
+      26: {
+        answer: "False",
+        explanation: "Non-functional testing (like load, performance, stress, and security testing) is best executed using automated tools to simulate high concurrency and perform deep scans, which cannot be done manually at scale."
+      },
+      27: {
+        answer: "A software testing type that performs tests early, often, and automatically.",
+        explanation: "Continuous testing is the process of executing automated tests as part of the software delivery pipeline to obtain immediate feedback on business risks."
+      },
+      28: {
+        answer: "A software testing type that performs tests early, often, and automatically.",
+        explanation: "Continuous testing is the process of executing automated tests as part of the software delivery pipeline to obtain immediate feedback on business risks."
+      },
+
+      // Git Section
+      29: {
+        answer: "git commit -m \"Hello Git\"",
+        explanation: "The 'git commit' command saves changes to the local repository, and '-m' specifies the commit message inline."
+      },
+      30: {
+        answer: "git commit -m \"Hello Git\"",
+        explanation: "The 'git commit' command saves changes to the local repository, and '-m' specifies the commit message inline."
+      },
+      31: {
+        answer: "git log",
+        explanation: "The 'git log' command shows the commit history for the active branch in reverse chronological order."
+      },
+      32: {
+        answer: "git reset HEAD a.txt",
+        explanation: "To unstage a file (remove it from the staging area/index while keeping working directory changes), run 'git reset HEAD <file>'."
+      },
+      33: {
+        answer: "git reset HEAD a.txt",
+        explanation: "To unstage a file (remove it from the staging area/index while keeping working directory changes), run 'git reset HEAD <file>'."
+      },
+      34: {
+        answer: "git add README",
+        explanation: "The 'git add' command adds a new or modified file to the staging area to start tracking it."
+      },
+      35: {
+        answer: "git checkout -b feature-a",
+        explanation: "The '-b' flag with 'git checkout' creates a new branch and immediately switches the workspace to it."
+      },
+      36: {
+        answer: "git branch -v",
+        explanation: "The '-v' (verbose) option lists all local branches along with the SHA-1 and commit subject line of their last commit."
+      },
+      37: {
+        answer: "git branch hotfix",
+        explanation: "Running 'git branch <branch-name>' creates a new branch pointing to the current HEAD without switching to it."
+      },
+      38: {
+        answer: "git branch hotfix",
+        explanation: "Running 'git branch <branch-name>' creates a new branch pointing to the current HEAD without switching to it."
+      },
+      39: {
+        answer: "git commit --amend",
+        explanation: "The '--amend' option lets you modify the most recent commit, including editing its message or adding new staged changes."
+      },
+      40: {
+        answer: "git stash",
+        explanation: "Running 'git stash' saves your uncommitted changes (both staged and unstaged) to a dirty state storage and reverts the working directory to match the HEAD commit."
+      },
+      41: {
+        answer: "git stash apply",
+        explanation: "The 'git stash apply' command restores the changes from the top of the stash stack without removing them from the stash list."
+      },
+      42: {
+        answer: "git clean",
+        explanation: "The 'git clean' command removes untracked files and directories from the working directory."
+      },
+      43: {
+        answer: "git rm --cached b.txt",
+        explanation: "The '--cached' flag tells Git to remove the file from the index/staging area only, leaving the file in your working directory untouched."
+      },
+      44: {
+        answer: "git rm a.txt",
+        explanation: "Running 'git rm' removes the file from the working directory and stages the deletion in the index/staging area."
+      },
+      45: {
+        answer: "blob, tag, commit, tree",
+        explanation: "Git's internal object database contains four main types: blob (file content), tree (directories/filenames), commit (metadata/history), and tag (labels/references)."
+      },
+      46: {
+        answer: "git read-tree --prefix=bak d8333fc1cc938780ffdd9f94e0d364e0ea74f598",
+        explanation: "The 'git read-tree' command reads a tree object into the index. The '--prefix' option lets you specify a subdirectory where the tree content should be loaded."
+      },
+
+      // QA Automation Section
+      47: {
+        answer: "Re-locate the element fresh (re-run the locator) after the UI has finished updating, rather than reusing a previously-found WebElement reference that now points to a detached node",
+        explanation: "StaleElementReferenceException means the DOM updated and the reference is dead. The correct solution is to locate the element fresh after the update."
+      },
+      48: {
+        answer: "Give each iOS device its own unique wdaLocalPort, and ensure each has a correctly pre-built/signed WebDriverAgent instance (via usePrebuiltWDA, a unique updatedWDABundleId, and a valid provisioning profile per device) so parallel sessions don't collide on ports or signing identity",
+        explanation: "Parallel iOS automation in Appium requires unique wdaLocalPort configuration and separate signed WebDriverAgent instances to prevent port and profile compilation conflicts."
+      },
+      49: {
+        answer: "Use the device farm's secure tunneling/local-testing feature (most cloud device farms provide one — e.g., a local tunnel binary or agent) to create a secure connection between your internal network and the remote devices, so they can reach your staging environment without exposing it publicly",
+        explanation: "Secure tunnels (like BrowserStack Local or Sauce Connect) bridge private networks to cloud devices securely without exposing endpoints publically."
+      },
+      50: {
+        answer: "Run multiple Appium server instances/nodes (e.g., grouped per host or device group) behind a session-routing/orchestration layer, rather than funneling every session through one server process",
+        explanation: "To scale Appium horizontally, distribute the test execution load across multiple server instances/nodes fronted by a grid/orchestrator."
+      },
+      51: {
+        answer: "Unique systemPort/wdaLocalPort and unique udid per session; without these, parallel sessions collide on the same ports even though each device is physically distinct",
+        explanation: "Parallel Appium execution on the same host machine requires explicit port allocations (systemPort for Android, wdaLocalPort for iOS) to avoid binding collisions."
+      },
+      52: {
+        answer: "Use driver.getContextHandles() to detect the WEBVIEW_x context, switch into it via driver.context() to interact with standard HTML form elements, then switch back to NATIVE_APP for the confirmation screen",
+        explanation: "Hybrid app testing requires fetching context handles, switching to the WEBVIEW context for HTML elements, and switching back to NATIVE_APP afterward."
+      },
+      53: {
+        answer: "Inspect each context (switch into it, then check the page source/URL) to confirm which one is your app's actual WebView before committing to it — don't rely on index or name alone",
+        explanation: "Indices of WebViews are not stable; switching into each context to inspect URL/source ensures target validation before performing test steps."
+      },
+      54: {
+        answer: "Use a ThreadLocal<WebDriver> field, set via .set() in @BeforeMethod and cleared via .remove() in @AfterMethod, so each thread transparently gets its own isolated instance",
+        explanation: "ThreadLocal isolates the WebDriver instances within parallel threads, avoiding collision without having to pass the driver instance as a parameter everywhere."
+      },
+      55: {
+        answer: "Place all test steps inside a try block and call driver.quit() inside the corresponding finally block (or use a testing framework's @AfterMethod hook, which behaves the same way)",
+        explanation: "teardown hooks (like @AfterMethod in TestNG) or finally blocks guarantee driver.quit() executes regardless of whether assertions fail or exceptions occur."
+      },
+      56: {
+        answer: "Introduce consumer-driven contract testing (e.g., Pact): the mobile team publishes the request/response contracts it depends on, and each backend service verifies against those contracts in its own CI pipeline before deploying",
+        explanation: "Contract testing (Pact) ensures that changes to microservices do not break integration expectations with consumer apps without needing heavy, slow E2E regression pipelines."
+      },
+      57: {
+        answer: "Build a token provider/utility that fetches or refreshes the token automatically (e.g., in a @BeforeSuite/@BeforeMethod hook, or lazily on 401 responses) and injects it via a request filter",
+        explanation: "An intercepting token provider automatically refreshes expired authorization tokens, ensuring long-running suites remain authenticated without hardcoding."
+      },
+      58: {
+        answer: "Setting RestAssured.baseURI as a global static field inside a shared helper method silently mutates behavior for every other test that runs afterward in the same JVM, and hardcodes the environment instead of using a per-suite RequestSpecification with externalized config",
+        explanation: "Setting global static variables inside helper methods causes unexpected side-effects across parallel test runs. RequestSpecification is the thread-safe alternative."
+      },
+      59: {
+        answer: "Mock/stub the unstable dependency (e.g., with WireMock) so your test validates your API's behavior independently of the third party's uptime",
+        explanation: "Stubbing external dependencies (WireMock) isolates the API under test, removing environmental instability and test flakiness."
+      },
+      60: {
+        answer: "Poll the status endpoint with a bounded timeout and interval — e.g., Awaitility's await().atMost(30, SECONDS).pollInterval(2, SECONDS).until(...) — and fail with a clear message if it never completes",
+        explanation: "Polling libraries (like Awaitility) allow clean, non-blocking validation of asynchronous operations with customized timeouts and intervals instead of hardcoded sleeps."
+      },
+      61: {
+        answer: "Use REST Assured's JSON Schema Validator (.body(matchesJsonSchemaInClasspath(\"product-schema.json\")), via the json-schema-validator dependency) to validate the full response structure against a schema file",
+        explanation: "JSON Schema validation allows structural verification of keys, data types, and required constraints in a single assertion against a schema definition."
+      }
+    };
+
+    function showAnswerDetails() {
+      const item = screenshots[currentIdx];
+      const official = OFFICIAL_ANSWERS[item.id];
+      const custom = customAnswers[item.id];
+      
+      const card = document.getElementById('correct-answer-card');
+      const answerText = document.getElementById('official-answer-text');
+      const explanationText = document.getElementById('official-explanation-text');
+      
+      card.style.display = 'block';
+      cancelEditAnswer();
+      
+      if (custom) {
+        answerText.textContent = custom.answer;
+        explanationText.textContent = custom.explanation || "No explanation provided.";
+      } else if (official) {
+        answerText.textContent = official.answer;
+        explanationText.textContent = official.explanation;
+      } else {
+        answerText.textContent = "No correct answer recorded yet.";
+        explanationText.textContent = "Click 'Edit' to record the correct answer and explanation.";
+      }
+    }
+
+    function hideAnswerDetails() {
+      const card = document.getElementById('correct-answer-card');
+      card.style.display = 'none';
+    }
+
+    function toggleEditAnswer() {
+      const item = screenshots[currentIdx];
+      const official = OFFICIAL_ANSWERS[item.id] || { answer: '', explanation: '' };
+      const custom = customAnswers[item.id] || null;
+      
+      const defaultAnswer = custom ? custom.answer : official.answer;
+      const defaultExplanation = custom ? custom.explanation : official.explanation;
+      
+      document.getElementById('edit-answer-input').value = defaultAnswer;
+      document.getElementById('edit-explanation-input').value = defaultExplanation;
+      
+      document.getElementById('explanation-container').style.display = 'none';
+      document.getElementById('edit-answer-form').style.display = 'flex';
+      document.getElementById('edit-answer-btn').style.display = 'none';
+    }
+
+    function cancelEditAnswer() {
+      document.getElementById('explanation-container').style.display = 'block';
+      document.getElementById('edit-answer-form').style.display = 'none';
+      document.getElementById('edit-answer-btn').style.display = 'block';
+    }
+
+    function saveCustomAnswer() {
+      const item = screenshots[currentIdx];
+      const ans = document.getElementById('edit-answer-input').value.trim();
+      const exp = document.getElementById('edit-explanation-input').value.trim();
+      
+      if (ans || exp) {
+        customAnswers[item.id] = { answer: ans, explanation: exp };
+      } else {
+        delete customAnswers[item.id];
+      }
+      
+      localStorage.setItem('custom_answers_a', JSON.stringify(customAnswers));
+      showAnswerDetails();
+    }
+
+    // DOM Elements
+    const questionListContainer = document.getElementById('question-list');
+    const searchBar = document.getElementById('search-bar');
+    const categoryFilter = document.getElementById('category-filter');
+    
+    const questionTitleEl = document.getElementById('question-title-text');
+    const categoryTagEl = document.getElementById('question-category-tag');
+    
+    const splitViewer = document.getElementById('split-viewer');
+    const fullViewer = document.getElementById('full-viewer');
+    const questionImg = document.getElementById('question-img');
+    const answerImg = document.getElementById('answer-img');
+    const fullImg = document.getElementById('full-img');
+    
+    const answerOverlay = document.getElementById('answer-overlay');
+    const revealBtn = document.getElementById('reveal-btn');
+    const revealHeaderBtn = document.getElementById('reveal-header-btn');
+    const toggleViewBtn = document.getElementById('toggle-view-btn');
+    const viewModeLabel = document.getElementById('view-mode-label');
+    const flagBtn = document.getElementById('flag-btn');
+    
+    const prevBtn = document.getElementById('prev-btn');
+    const nextBtn = document.getElementById('next-btn');
+    const progressText = document.getElementById('progress-text');
+    const progressBar = document.getElementById('progress-bar-el');
+    const notesInput = document.getElementById('notes-input');
+    
+    const statCount = document.getElementById('stat-count');
+    const statFlagged = document.getElementById('stat-flagged');
+    const statNotes = document.getElementById('stat-notes');
+
+    // Helper functions to categorize files
+    function getCategoryForIndex(i) {
+      if (i >= 4 && i <= 28) return "Software Testing";
+      if (i >= 29 && i <= 47) return "Git";
+      if (i >= 48 && i <= 61) return "QA Automation";
+      return "General";
+    }
+
+    function getSubcategoryForIndex(i) {
+      if (i >= 4 && i <= 6) return "practice";
+      return "assessment";
+    }
+
+    function getTitleForIndex(i) {
+      const category = getCategoryForIndex(i);
+      const sub = getSubcategoryForIndex(i);
+      
+      let relativeNum = "";
+      if (category === "Software Testing") {
+        if (sub === "practice") relativeNum = `Practice ${i - 3}`;
+        else relativeNum = `Q${i - 6}`;
+      } else if (category === "Git") {
+        relativeNum = `Q${i - 28}`;
+      } else if (category === "QA Automation") {
+        relativeNum = `Q${i - 47}`;
+      } else {
+        relativeNum = `Page ${i}`;
+      }
+      
+      return `${category} (${relativeNum})`;
+    }
+
+    // Initialize Dataset
+    function initData() {
+      screenshots = [];
+      for (let i = 4; i <= 61; i++) {
+        screenshots.push({
+          id: i,
+          filename: `Screenshot (${i}).png`,
+          path: `QuestionsA/Screenshot (${i}).png`,
+          category: getCategoryForIndex(i),
+          subcategory: getSubcategoryForIndex(i),
+          title: getTitleForIndex(i)
+        });
+      }
+      updateStats();
+    }
+
+    // Render Sidebar List
+    function renderSidebar() {
+      const searchTerm = searchBar.value.toLowerCase();
+      const catValue = categoryFilter.value;
+      
+      questionListContainer.innerHTML = '';
+      let matches = 0;
+
+      screenshots.forEach((item, index) => {
+        const itemNote = (notes[item.id] || '').toLowerCase();
+        const matchesSearch = item.title.toLowerCase().includes(searchTerm) || 
+                              itemNote.includes(searchTerm) || 
+                              item.filename.toLowerCase().includes(searchTerm);
+        
+        let matchesCategory = true;
+        if (catValue === 'flagged') {
+          matchesCategory = flaggedIds.includes(item.id);
+        } else if (catValue === 'has_notes') {
+          matchesCategory = !!notes[item.id];
+        } else if (catValue !== 'all') {
+          matchesCategory = item.category === catValue;
+        }
+
+        if (matchesSearch && matchesCategory) {
+          matches++;
+          const el = document.createElement('div');
+          el.className = `question-item ${index === currentIdx ? 'active' : ''}`;
+          el.onclick = () => selectQuestion(index);
+
+          // Get badge class based on subcategory
+          let badgeClass = 'badge-assessment';
+          if (item.subcategory === 'practice') badgeClass = 'badge-practice';
+          if (item.subcategory === 'survey') badgeClass = 'badge-survey';
+          if (['intro', 'setup', 'feedback', 'outro'].includes(item.subcategory)) badgeClass = 'badge-practice';
+
+          const hasNote = !!notes[item.id];
+          const isFlagged = flaggedIds.includes(item.id);
+
+          el.innerHTML = `
+            <div class="item-meta">
+              <div class="item-title">${item.title}</div>
+              <div class="item-subtitle">
+                <span class="badge ${badgeClass}">${item.subcategory}</span>
+                <span>ID: #${item.id}</span>
+              </div>
+            </div>
+            <div class="item-indicators">
+              <span class="indicator-flag" style="display: ${isFlagged ? 'inline' : 'none'}">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2">
+                  <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"></path>
+                </svg>
+              </span>
+              <span class="indicator-note" style="display: ${hasNote ? 'inline' : 'none'}">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                  <polyline points="14 2 14 8 20 8"></polyline>
+                  <line x1="16" y1="13" x2="8" y2="13"></line>
+                  <line x1="16" y1="17" x2="8" y2="17"></line>
+                  <polyline points="10 9 9 9 8 9"></polyline>
+                </svg>
+              </span>
+            </div>
+          `;
+          
+          questionListContainer.appendChild(el);
+          
+          // Scroll active element into view on load/search
+          if (index === currentIdx) {
+            el.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+          }
+        }
+      });
+
+      statCount.textContent = matches;
+    }
+
+    // Select & Load Question
+    function selectQuestion(idx) {
+      if (idx < 0 || idx >= screenshots.length) return;
+      
+      currentIdx = idx;
+      const item = screenshots[currentIdx];
+      
+      // Update UI Header
+      questionTitleEl.textContent = item.title;
+      categoryTagEl.textContent = item.category;
+
+      // Update Images
+      questionImg.src = item.path;
+      answerImg.src = item.path;
+      fullImg.src = item.path;
+
+      // Reset Answer Reveal State (Revealed/Open by default)
+      revealed = true;
+      answerOverlay.classList.add('revealed');
+      revealHeaderBtn.textContent = "Hide";
+      showAnswerDetails();
+
+      // Load Notes & Flag details
+      notesInput.value = notes[item.id] || '';
+      updateFlagButtonState();
+
+      // Update Navigation display
+      progressText.textContent = `Question ${currentIdx + 1} of ${screenshots.length}`;
+      const percentage = ((currentIdx + 1) / screenshots.length) * 100;
+      progressBar.style.width = `${percentage}%`;
+
+      // Update active state in sidebar
+      const items = questionListContainer.querySelectorAll('.question-item');
+      items.forEach(el => el.classList.remove('active'));
+      
+      // Re-render sidebar to update the selected highlight index
+      renderSidebar();
+    }
+
+    // Toggle View Mode (Split-Screen / Full Image)
+    function toggleViewMode() {
+      if (viewMode === 'split') {
+        viewMode = 'full';
+        splitViewer.style.display = 'none';
+        fullViewer.style.display = 'flex';
+        viewModeLabel.textContent = 'Switch to Split View';
+        toggleViewBtn.querySelector('svg').innerHTML = `
+          <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+          <line x1="3" y1="9" x2="21" y2="9"></line>
+        `;
+      } else {
+        viewMode = 'split';
+        splitViewer.style.display = 'flex';
+        fullViewer.style.display = 'none';
+        viewModeLabel.textContent = 'Switch to Full View';
+        toggleViewBtn.querySelector('svg').innerHTML = `
+          <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+          <line x1="9" y1="3" x2="9" y2="21"></line>
+        `;
+      }
+    }
+
+    // Toggle Answer Reveal
+    function toggleReveal() {
+      revealed = !revealed;
+      if (revealed) {
+        answerOverlay.classList.add('revealed');
+        revealHeaderBtn.textContent = "Hide";
+        showAnswerDetails();
+      } else {
+        answerOverlay.classList.remove('revealed');
+        revealHeaderBtn.textContent = "Reveal";
+        hideAnswerDetails();
+      }
+    }
+
+    // Toggle Bookmark / Flag
+    function toggleFlag() {
+      const item = screenshots[currentIdx];
+      const index = flaggedIds.indexOf(item.id);
+      
+      if (index === -1) {
+        flaggedIds.push(item.id);
+      } else {
+        flaggedIds.splice(index, 1);
+      }
+      
+      localStorage.setItem('flagged_ids_a', JSON.stringify(flaggedIds));
+      updateFlagButtonState();
+      updateStats();
+      renderSidebar();
+    }
+
+    function updateFlagButtonState() {
+      const item = screenshots[currentIdx];
+      const isFlagged = flaggedIds.includes(item.id);
+      
+      if (isFlagged) {
+        flagBtn.className = 'btn btn-flagged';
+        flagBtn.querySelector('span').textContent = 'Flagged';
+        flagBtn.querySelector('svg').setAttribute('fill', 'currentColor');
+      } else {
+        flagBtn.className = 'btn';
+        flagBtn.querySelector('span').textContent = 'Flag Question';
+        flagBtn.querySelector('svg').setAttribute('fill', 'none');
+      }
+    }
+
+    // Notes auto-save
+    notesInput.oninput = function() {
+      const item = screenshots[currentIdx];
+      const val = notesInput.value.trim();
+      
+      if (val) {
+        notes[item.id] = val;
+      } else {
+        delete notes[item.id];
+      }
+      
+      localStorage.setItem('screenshot_notes_a', JSON.stringify(notes));
+      updateStats();
+    };
+
+    // Keep sidebar updated when notes input loses focus
+    notesInput.onblur = function() {
+      renderSidebar();
+    };
+
+    // Update statistics dashboard indicators
+    function updateStats() {
+      statFlagged.textContent = flaggedIds.length;
+      statNotes.textContent = Object.keys(notes).length;
+    }
+
+    // Navigation triggers
+    function navigate(dir) {
+      let nextIdx = currentIdx + dir;
+      if (nextIdx >= 0 && nextIdx < screenshots.length) {
+        selectQuestion(nextIdx);
+      }
+    }
+
+    // Keyboards shortcuts listener
+    window.onkeydown = function(e) {
+      // Ignore shortcuts if user is typing in notes, search bar, or edit fields
+      const editAnswerInput = document.getElementById('edit-answer-input');
+      const editExplanationInput = document.getElementById('edit-explanation-input');
+      if (document.activeElement === notesInput || 
+          document.activeElement === searchBar ||
+          document.activeElement === editAnswerInput ||
+          document.activeElement === editExplanationInput) {
+        return;
+      }
+
+      if (e.key === 'ArrowRight' || e.key.toLowerCase() === 'd') {
+        navigate(1);
+        e.preventDefault();
+      } else if (e.key === 'ArrowLeft' || e.key.toLowerCase() === 'a') {
+        navigate(-1);
+        e.preventDefault();
+      } else if (e.key === ' ' || e.key.toLowerCase() === 'r') {
+        toggleReveal();
+        e.preventDefault();
+      } else if (e.key.toLowerCase() === 'f') {
+        toggleFlag();
+        e.preventDefault();
+      } else if (e.key.toLowerCase() === 'v') {
+        toggleViewMode();
+        e.preventDefault();
+      }
+    };
+
+    // Event Bindings
+    searchBar.oninput = renderSidebar;
+    categoryFilter.onchange = renderSidebar;
+    prevBtn.onclick = () => navigate(-1);
+    nextBtn.onclick = () => navigate(1);
+    revealBtn.onclick = toggleReveal;
+    revealHeaderBtn.onclick = toggleReveal;
+    toggleViewBtn.onclick = toggleViewMode;
+    flagBtn.onclick = toggleFlag;
+    
+    document.getElementById('edit-answer-btn').onclick = toggleEditAnswer;
+    document.getElementById('cancel-edit-btn').onclick = cancelEditAnswer;
+    document.getElementById('save-edit-btn').onclick = saveCustomAnswer;
+
+    // Initialization
+    initData();
+    selectQuestion(0);
+  </script>
+</body>
+</html>
